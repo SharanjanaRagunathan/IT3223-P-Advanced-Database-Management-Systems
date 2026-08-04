@@ -1,0 +1,158 @@
+1. create two users student_1 and student_2 with the password '123456' at the localhost.
+
+2.list down the created users.
+
+3. change the username of student_1 with your registration number,
+
+4.list down the user name and password.
+
+5.change the password of student_2 with new password.
+
+6.list down user name and password again.
+
+7. change the host of student_2 to 'vau.ac.lk'.
+
+8.list down the user name and password.
+
+
+----------------------------------------------------------
+
+
+
+Answer
+1)
+
+CREATE USER 'Student_1'@'localhost' IDENTIFIED BY '123456';
+
+Query OK, 0 rows affected (0.004 sec)
+
+CREATE USER 'Student_2'@'localhost' IDENTIFIED BY '123456';
+
+Query OK, 0 rows affected (0.003 sec)
+
+
+
+
+-----------------------------------------------------
+
+
+
+
+2)
+select user, host, password from user;
+
+MariaDB [mysql]> select user, host, password from user;
++--------------+-----------+-------------------------------------------+
+| User         | Host      | Password                                  |
++--------------+-----------+-------------------------------------------+
+| root         | localhost |                                           |
+| Sharanjana01 | Shana     | *B39498816BD31CED10E0726B6795E1BC22ABBD57 |
+| root         | 127.0.0.1 |                                           |
+| root         | ::1       |                                           |
+| pma          | localhost |                                           |
+| ZAARA        | localhost |                                           |
+| Student_1    | localhost | *6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9 |
+| Student_2    | localhost | *6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9 |
++--------------+-----------+-------------------------------------------+
+8 rows in set (0.001 sec)
+
+
+
+--------------------------------------------
+
+
+
+3)
+
+update user set user='2021ICT51' where user='Student_1';
+
+MariaDB [mysql]> update user set user='2021ICT51' where user='Student_1';
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+
+
+----------------------------------------------
+
+
+4)
+
+MariaDB [mysql]>  select user, host, password from user;
++--------------+-----------+-------------------------------------------+
+| User         | Host      | Password                                  |
++--------------+-----------+-------------------------------------------+
+| root         | localhost |                                           |
+| Sharanjana01 | Shana     | *B39498816BD31CED10E0726B6795E1BC22ABBD57 |
+| root         | 127.0.0.1 |                                           |
+| root         | ::1       |                                           |
+| pma          | localhost |                                           |
+| ZAARA        | localhost |                                           |
+| 2021ICT51    | localhost | *6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9 |
+| Student_2    | localhost | *6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9 |
++--------------+-----------+-------------------------------------------+
+8 rows in set (0.001 sec)
+
+
+----------------------------------------------------
+
+
+
+5)
+set password for 'Student_2'@localhost=password('zaara');
+
+MariaDB [mysql]> set password for 'Student_2'@localhost=password('zaara');
+Query OK, 0 rows affected (0.003 sec)
+
+
+
+-----------------------------------------------------
+
+
+
+6)
+MariaDB [mysql]>  select user, host, password from user;
++--------------+-----------+-------------------------------------------+
+| User         | Host      | Password                                  |
++--------------+-----------+-------------------------------------------+
+| root         | localhost |                                           |
+| Sharanjana01 | Shana     | *B39498816BD31CED10E0726B6795E1BC22ABBD57 |
+| root         | 127.0.0.1 |                                           |
+| root         | ::1       |                                           |
+| pma          | localhost |                                           |
+| ZAARA        | localhost |                                           |
+| 2021ICT51    | localhost | *6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9 |
+| Student_2    | localhost | *5777375EA978E87C5C7F2D330E7E506A09E13639 |
++--------------+-----------+-------------------------------------------+
+8 rows in set (0.001 sec)
+
+
+
+
+-------------------------------------------------------
+
+7)
+update user set host='vau.ac.lk' where user='Student_2';
+
+Query OK, 1 row affected (0.002 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------------------------------------------------
+
+8)
+select user, host from user;
+
+MariaDB [mysql]> select user, host from user;
++--------------+-----------+
+| User         | Host      |
++--------------+-----------+
+| root         | 127.0.0.1 |
+| root         | ::1       |
+| Sharanjana01 | Shana     |
+| 2021ICT51    | localhost |
+| ZAARA        | localhost |
+| pma          | localhost |
+| root         | localhost |
+| Student_2    | vau.ac.lk |
++--------------+-----------+
+8 rows in set (0.001 sec)

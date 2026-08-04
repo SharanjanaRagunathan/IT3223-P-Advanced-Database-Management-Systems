@@ -1,0 +1,86 @@
+open MySQL ->Apache -> start
+
+http://127.0.0.1:81/dashboard/
+
+user account-> add user account
+
+apache ->config-> php my admin(config).
+
+
+
+
+
+
+#################################################
+
+
+CREATE VIEW <view_name> AS <queries>;
+
+CREATE VIEW view_1 AS SELECT * FROM Suppliers;
+Query OK, 0 rows affected (0.006 sec)
+
+
+//the SELECT * FROM Suppliers; queries is save to view_1 and then we get the tables view_1
+
+MariaDB [partssupplydb]> select * from view_1;
++-----+-------+--------+----------+
+| SID | SName | Status | SCity    |
++-----+-------+--------+----------+
+| S1  | Smith |     20 | London   |
+| S10 | Smith |   NULL | New York |
+| S2  | Jones |     10 | Paris    |
+| S3  | Black |     30 | Paris    |
+| S4  | Clark |     20 | London   |
+| S5  | Adams |     30 | Athens   |
++-----+-------+--------+----------+
+6 rows in set (0.001 sec)
+
+
+
+
+
+
+
+##########################################################
+
+
+DROP VIEW <view_name>
+
+DROP VIEW view_1;
+
+Query OK, 0 rows affected (0.001 sec)
+
+
+
+
+
+##########################################################
+
+SELECT table_schema,table_name,view_definition
+FROM information_schema.views
+WHERE table_schema = 'partssupplydb';
+
+
+
+MariaDB [partssupplydb]> SELECT table_schema,table_name,view_definition
+    -> FROM information_schema.views
+    -> WHERE table_schema = 'partssupplydb';
++---------------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| table_schema  | table_name | view_definition                                                                                                                                                                                                                   |
++---------------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| partssupplydb | view_1     | select `partssupplydb`.`suppliers`.`SID` AS `SID`,`partssupplydb`.`suppliers`.`SName` AS `SName`,`partssupplydb`.`suppliers`.`Status` AS `Status`,`partssupplydb`.`suppliers`.`SCity` AS `SCity` from `partssupplydb`.`suppliers` |
++---------------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.016 sec)
+
+
+
+
+
+###################################################################
+
+
+
+
+
+
+

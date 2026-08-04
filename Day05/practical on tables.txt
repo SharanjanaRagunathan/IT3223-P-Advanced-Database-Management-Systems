@@ -1,0 +1,516 @@
+create database  customer_db;
+Query OK, 1 row affected (0.01 sec)
+
+
+use  customer_db;
+Database changed
+
+
+---------------------------------------------------------
+
+
+CREATE TABLE CUSTOMERS (
+    -> ID INT NOT NULL,
+    -> NAME VARCHAR (20) NOT NULL,
+    -> AGE INT NOT NULL,
+    -> ADDRESS CHAR (25),
+    -> SALARY DECIMAL (18, 2),
+    -> PRIMARY KEY (ID)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+
+
+------------------------------------------------------------
+
+
+INSERT INTO CUSTOMERS VALUES
+    -> (1,'Sunath',30,'Colombo',2000.00),
+    -> (2,'Kamal',28,'Jaffna',1500.00),
+    -> (3,'Mala',25,'Kandy',NULL),
+    -> (4,'Manuja',26,'Gampaha',6500.00),
+    -> (5,'Kathees',22,'Anuradhapura',8500.00),
+    -> (6,'Anushi',27,'Vavuniya',NULL),
+    -> (7,'Mahi',28,'Mahi',10000.00);
+Query OK, 7 rows affected (0.01 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+
+
+
+---------------------------------------------------------------
+
+mysql> select * from CUSTOMERS;
++----+---------+-----+--------------+----------+
+| ID | NAME    | AGE | ADDRESS      | SALARY   |
++----+---------+-----+--------------+----------+
+|  1 | Sunath  |  30 | Colombo      |  2000.00 |
+|  2 | Kamal   |  28 | Jaffna       |  1500.00 |
+|  3 | Mala    |  25 | Kandy        |     NULL |
+|  4 | Manuja  |  26 | Gampaha      |  6500.00 |
+|  5 | Kathees |  22 | Anuradhapura |  8500.00 |
+|  6 | Anushi  |  27 | Vavuniya     |     NULL |
+|  7 | Mahi    |  28 | Mahi         | 10000.00 |
++----+---------+-----+--------------+----------+
+7 rows in set (0.00 sec)
+
+
+
+
+
+------------------------------------------------------------------------
+
+
+
+SELECT NAME, ADDRESS, NULLIF(NAME, ADDRESS) AS Result FROM CUSTOMERS;
++---------+--------------+---------+
+| NAME    | ADDRESS      | Result  |
++---------+--------------+---------+
+| Sunath  | Colombo      | Sunath  |
+| Kamal   | Jaffna       | Kamal   |
+| Mala    | Kandy        | Mala    |
+| Manuja  | Gampaha      | Manuja  |
+| Kathees | Anuradhapura | Kathees |
+| Anushi  | Vavuniya     | Anushi  |
+| Mahi    | Mahi         | NULL    |
++---------+--------------+---------+
+7 rows in set (0.00 sec)
+
+
+
+---------------------------------------------------------------------------
+
+
+SELECT NAME, SALARY, IFNULL(SALARY, 5500) AS Result FROM CUSTOMERS;
++---------+----------+----------+
+| NAME    | SALARY   | Result   |
++---------+----------+----------+
+| Sunath  |  2000.00 |  2000.00 |
+| Kamal   |  1500.00 |  1500.00 |
+| Mala    |     NULL |  5500.00 |
+| Manuja  |  6500.00 |  6500.00 |
+| Kathees |  8500.00 |  8500.00 |
+| Anushi  |     NULL |  5500.00 |
+| Mahi    | 10000.00 | 10000.00 |
++---------+----------+----------+
+7 rows in set (0.00 sec)
+
+
+-----------------------------------------------------------------------------
+
+
+mysql> INSERT INTO CUSTOMERS_2 VALUES
+    -> (1, 'Sunath', 30, 'Colombo', 2000.00),
+    -> (2, 'Kamal', 28, 'Jaffna', 1500.00),
+    -> (3, 'Mala', 25, 'Kandy', NULL),
+    -> (4, 'Manuja', 26, 'Gampaha', 6500.00),
+    -> (5, 'Kathees', 22, 'Anuradhapura', 8500.00),
+    -> (6, 'Anushi', 27, 'Vavuniya', NULL),
+    -> (7, 'Mahi', 28, 'Mahi', 10000.00);
+Query OK, 7 rows affected (0.01 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+
+
+mysql> select * from CUSTOMERS_2;
++----+---------+-----+--------------+----------+
+| ID | NAME    | AGE | ADDRESS      | SALARY   |
++----+---------+-----+--------------+----------+
+|  1 | Sunath  |  30 | Colombo      |  2000.00 |
+|  2 | Kamal   |  28 | Jaffna       |  1500.00 |
+|  3 | Mala    |  25 | Kandy        |     NULL |
+|  4 | Manuja  |  26 | Gampaha      |  6500.00 |
+|  5 | Kathees |  22 | Anuradhapura |  8500.00 |
+|  6 | Anushi  |  27 | Vavuniya     |     NULL |
+|  7 | Mahi    |  28 | Mahi         | 10000.00 |
++----+---------+-----+--------------+----------+
+7 rows in set (0.00 sec)
+
+
+-----------------------------------------------------------------------
+
+
+SELECT table_name, constraint_type, constraint_name FROM information_schema.table_constraints WHERE table_name='CUSTOMERS_2';
++-------------+-----------------+-------------------+
+| TABLE_NAME  | CONSTRAINT_TYPE | CONSTRAINT_NAME   |
++-------------+-----------------+-------------------+
+| customers_2 | PRIMARY KEY     | PRIMARY           |
+| customers_2 | CHECK           | customers_2_chk_1 |
++-------------+-----------------+-------------------+
+2 rows in set (0.01 sec)
+
+
+
+
+-------------------------------------------------------------------------
+
+mysql> INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY) VALUES
+    -> (1, ‘Mithilan’, 15, ‘Vanni’, 2000.00 );
+ERROR 1054 (42S22): Unknown column '‘Mithilan’' in 'field list'
+
+
+
+----------------------------------------------------------------------
+
+
+
+mysql> UPDATE CUSTOMERS_2
+    -> SET AGE = 18
+    -> WHERE NAME = 'Mathi';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select * from CUSTOMERS_2;
++----+---------+-----+--------------+----------+
+| ID | NAME    | AGE | ADDRESS      | SALARY   |
++----+---------+-----+--------------+----------+
+|  1 | Sunath  |  30 | Colombo      |  2000.00 |
+|  2 | Kamal   |  28 | Jaffna       |  1500.00 |
+|  3 | Mala    |  25 | Kandy        |     NULL |
+|  4 | Manuja  |  26 | Gampaha      |  6500.00 |
+|  5 | Kathees |  22 | Anuradhapura |  8500.00 |
+|  6 | Anushi  |  27 | Vavuniya     |     NULL |
+|  7 | Mahi    |  28 | Mahi         | 10000.00 |
++----+---------+-----+--------------+----------+
+7 rows in set (0.00 sec)
+
+
+
+---------------------------------------------------------------------
+
+
+mysql> CREATE TABLE CUSTOMERS_3 (
+    -> ID INT NOT NULL,
+    -> NAME VARCHAR (20) NOT NULL,
+    -> AGE INT NOT NULL CHECK(AGE >= 20),
+    -> ADDRESS CHAR (25),
+    -> SALARY DECIMAL (18, 2) CHECK(SALARY >= 20000),
+    -> PRIMARY KEY (ID)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+
+
+-------------------------------------------------------------------------
+
+
+
+mysql> SELECT table_name, constraint_type, constraint_name FROM
+    -> information_schema.table_constraints WHERE
+    -> table_name='CUSTOMERS_3';
++-------------+-----------------+-------------------+
+| TABLE_NAME  | CONSTRAINT_TYPE | CONSTRAINT_NAME   |
++-------------+-----------------+-------------------+
+| customers_3 | PRIMARY KEY     | PRIMARY           |
+| customers_3 | CHECK           | customers_3_chk_1 |
+| customers_3 | CHECK           | customers_3_chk_2 |
++-------------+-----------------+-------------------+
+3 rows in set (0.00 sec)
+
+
+
+-----------------------------------------------------------------------------
+
+
+
+mysql> INSERT INTO CUSTOMERS_3 (ID,NAME,AGE,ADDRESS,SALARY) VALUES
+    -> (1, ‘Mithilan’, 15, ‘Vanni’, 2000.00 );
+ERROR 1054 (42S22): Unknown column '‘Mithilan’' in 'field list'
+
+mysql> INSERT INTO CUSTOMERS_3 (ID, NAME, AGE, ADDRESS, SALARY)
+    -> VALUES (1, 'Mithilan', 25, 'Vanni', 25000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM CUSTOMERS_2;
++----+---------+-----+--------------+----------+
+| ID | NAME    | AGE | ADDRESS      | SALARY   |
++----+---------+-----+--------------+----------+
+|  1 | Sunath  |  30 | Colombo      |  2000.00 |
+|  2 | Kamal   |  28 | Jaffna       |  1500.00 |
+|  3 | Mala    |  25 | Kandy        |     NULL |
+|  4 | Manuja  |  26 | Gampaha      |  6500.00 |
+|  5 | Kathees |  22 | Anuradhapura |  8500.00 |
+|  6 | Anushi  |  27 | Vavuniya     |     NULL |
+|  7 | Mahi    |  28 | Mahi         | 10000.00 |
++----+---------+-----+--------------+----------+
+7 rows in set (0.00 sec)
+
+
+----------------------------------------------------------------------------------------
+
+
+
+mysql> CREATE TABLE PRODUCTS(
+    -> PID INT NOT NULL,
+    -> PNAME VARCHAR(30),
+    -> DELIVERY_CITY VARCHAR(20),
+    -> DATE_OF_ORDER Date NOT NULL,
+    -> PRICE INT,
+    -> PRIMARY KEY(PID),
+    -> CONSTRAINT Constraint_DOO CHECK(DATE_OF_ORDER <= '2023-02-09'));
+Query OK, 0 rows affected (0.04 sec)
+
+
+----------------------------------------------------------------------------
+
+
+
+SELECT table_name, constraint_type, constraint_name FROM 
+information_schema.table_constraints WHERE 
+table_name='PRODUCTS'; 
+
+
++------------+-----------------+-----------------+
+| TABLE_NAME | CONSTRAINT_TYPE | CONSTRAINT_NAME |
++------------+-----------------+-----------------+
+| products   | PRIMARY KEY     | PRIMARY         |
+| products   | CHECK           | Constraint_DOO  |
++------------+-----------------+-----------------+
+2 rows in set (0.01 sec)
+
+
+
+--------------------------------------------------------------------------------
+
+
+INSERT INTO PRODUCTS VALUES (001, 'Malik Nithin', 'Ranchi', 
+'2023-01-11', 2000);
+
+
+mysql> select * from PRODUCTS;
++-----+--------------+---------------+---------------+-------+
+| PID | PNAME        | DELIVERY_CITY | DATE_OF_ORDER | PRICE |
++-----+--------------+---------------+---------------+-------+
+|   1 | Malik Nithin | Ranchi        | 2023-01-11    |  2000 |
++-----+--------------+---------------+---------------+-------+
+1 row in set (0.00 sec)
+
+
+
+
+--------------------------------------------------------------------------------
+
+
+
+INSERT INTO PRODUCTS VALUES (002, 'Mathan Ran', 'Ranchi', '2023
+03-11', 2000);
+
+
+ERROR 3819 (HY000): Check constraint 'Constraint_DOO' is violated.
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+mysql> CREATE TABLE CUSTOMERS_4 (
+    -> ID INT NOT NULL,
+    -> NAME VARCHAR(20) NOT NULL,
+    -> AGE INT NOT NULL,
+    -> ADDRESS CHAR (25),
+    -> SALARY DECIMAL (18, 2),
+    -> PRIMARY KEY (ID)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+
+
+
+mysql> SELECT table_name, constraint_type, constraint_name FROM
+    -> information_schema.table_constraints WHERE
+    -> table_name='CUSTOMERS_4';
++-------------+-----------------+-----------------+
+| TABLE_NAME  | CONSTRAINT_TYPE | CONSTRAINT_NAME |
++-------------+-----------------+-----------------+
+| customers_4 | PRIMARY KEY     | PRIMARY         |
++-------------+-----------------+-----------------+
+1 row in set (0.00 sec)
+
+
+
+
+-----------------------------------------------------------------------
+
+
+mysql> ALTER TABLE CUSTOMERS_4 ADD CONSTRAINT Constraint_Age CHECK (AGE
+    -> >= 21);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+
+
+---------------------------------------------------------------------------
+
+
+
+
+mysql> SELECT table_name, constraint_type, constraint_name FROM
+    -> information_schema.table_constraints WHERE
+    -> table_name='CUSTOMERS_4';
++-------------+-----------------+-----------------+
+| TABLE_NAME  | CONSTRAINT_TYPE | CONSTRAINT_NAME |
++-------------+-----------------+-----------------+
+| customers_4 | PRIMARY KEY     | PRIMARY         |
+| customers_4 | CHECK           | Constraint_Age  |
++-------------+-----------------+-----------------+
+2 rows in set (0.00 sec)
+
+
+
+
+--------------------------------------------------------------------------
+
+
+
+mysql> ALTER TABLE CUSTOMERS_4 DROP CONSTRAINT Constraint_Age;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+
+---------------------------------------------------------------------------
+
+
+
+
+mysql> SELECT table_name, constraint_type, constraint_name FROM
+    -> information_schema.table_constraints WHERE
+    -> table_name='CUSTOMERS_4';
++-------------+-----------------+-----------------+
+| TABLE_NAME  | CONSTRAINT_TYPE | CONSTRAINT_NAME |
++-------------+-----------------+-----------------+
+| customers_4 | PRIMARY KEY     | PRIMARY         |
++-------------+-----------------+-----------------+
+1 row in set (0.00 sec)
+
+
+
+
+
+---------------------------------------------------------------------------
+
+
+mysql> CREATE TABLE CUSTOMERS_5 (
+    -> ID INT NOT NULL,
+    -> NAME VARCHAR (20) NOT NULL DEFAULT 'Mithilan',
+    -> AGE INT NOT NULL DEFAULT '32',
+    -> ADDRESS CHAR (25) DEFAULT 'Colombo',
+    -> SALARY DECIMAL (18, 2) DEFAULT '2000',
+    -> PRIMARY KEY (ID)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMERS_5 (ID) VALUES (1);
+Query OK, 1 row affected (0.01 sec)
+
+
+
+
+
+mysql> INSERT INTO CUSTOMERS_5 VALUES (2, 'Mathan', 25, 'Vavuniya',
+    -> 1500.00 );
+Query OK, 1 row affected (0.01 sec)
+
+
+
+
+mysql> SELECT * FROM CUSTOMERS_5;
++----+----------+-----+----------+---------+
+| ID | NAME     | AGE | ADDRESS  | SALARY  |
++----+----------+-----+----------+---------+
+|  1 | Mithilan |  32 | Colombo  | 2000.00 |
+|  2 | Mathan   |  25 | Vavuniya | 1500.00 |
++----+----------+-----+----------+---------+
+2 rows in set (0.00 sec)
+
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+mysql> INSERT INTO CUSTOMERS_5 VALUES
+    -> (3, 'Kanthan', DEFAULT, DEFAULT, 2000.00),
+    -> (4, 'Chithra', DEFAULT, DEFAULT, DEFAULT);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+
+
+mysql> SELECT * FROM CUSTOMERS_5;
++----+----------+-----+----------+---------+
+| ID | NAME     | AGE | ADDRESS  | SALARY  |
++----+----------+-----+----------+---------+
+|  1 | Mithilan |  32 | Colombo  | 2000.00 |
+|  2 | Mathan   |  25 | Vavuniya | 1500.00 |
+|  3 | Kanthan  |  32 | Colombo  | 2000.00 |
+|  4 | Chithra  |  32 | Colombo  | 2000.00 |
++----+----------+-----+----------+---------+
+4 rows in set (0.00 sec)
+
+
+
+----------------------------------------------------------------------------
+
+
+mysql> CREATE TABLE BUYERS (
+    -> ID INT NOT NULL,
+    -> NAME VARCHAR (20) NOT NULL,
+    -> AGE INT NOT NULL,
+    -> ADDRESS CHAR (25),
+    -> SALARY DECIMAL (18, 2),
+    -> PRIMARY KEY (ID)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+
+
+
+mysql> INSERT INTO BUYERS (ID, NAME, AGE, SALARY) VALUES (01, 'Rahul',
+    -> 27, 50000);
+Query OK, 1 row affected (0.01 sec)
+
+
+
+
+mysql> SELECT * FROM BUYERS WHERE ID = 01;
++----+-------+-----+---------+----------+
+| ID | NAME  | AGE | ADDRESS | SALARY   |
++----+-------+-----+---------+----------+
+|  1 | Rahul |  27 | NULL    | 50000.00 |
++----+-------+-----+---------+----------+
+1 row in set (0.00 sec)
+
+
+
+---------------------------------------------------------------------------
+
+
+
+mysql> ALTER TABLE CUSTOMERS_5 ALTER ADDRESS DROP DEFAULT;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+
+mysql> DESC CUSTOMERS_5;
++---------+---------------+------+-----+----------+-------+
+| Field   | Type          | Null | Key | Default  | Extra |
++---------+---------------+------+-----+----------+-------+
+| ID      | int           | NO   | PRI | NULL     |       |
+| NAME    | varchar(20)   | NO   |     | Mithilan |       |
+| AGE     | int           | NO   |     | 32       |       |
+| ADDRESS | char(25)      | YES  |     | NULL     |       |
+| SALARY  | decimal(18,2) | YES  |     | 2000.00  |       |
++---------+---------------+------+-----+----------+-------+
+5 rows in set (0.01 sec)
+
+
+
+
+

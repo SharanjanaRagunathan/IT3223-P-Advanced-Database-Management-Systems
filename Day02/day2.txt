@@ -1,0 +1,147 @@
+CREATE USER 'Sharanjana'@'localhost';
+
+use mysql;
+
+show tables;
+
+-------------------------------------
+select user, host from user;
+
+MariaDB [mysql]> select user, host from user;
++------------+-----------+
+| User       | Host      |
++------------+-----------+
+| root       | 127.0.0.1 |
+| root       | ::1       |
+| Sharanjana | localhost |
+| pma        | localhost |
+| root       | localhost |
++------------+-----------+
+5 rows in set (0.007 sec)
+
+
+-----------------------------------------
+select user, host, password from user;
+
+MariaDB [mysql]> select user, host, password from user;
++------------+-----------+----------+
+| User       | Host      | Password |
++------------+-----------+----------+
+| root       | localhost |          |
+| Sharanjana | localhost |          |
+| root       | 127.0.0.1 |          |
+| root       | ::1       |          |
+| pma        | localhost |          |
++------------+-----------+----------+
+5 rows in set (0.004 sec)
+
+-------------------------------------------
+
+CREATE USER 'Sharanjana'@'localhost' IDENTIFIED BY 'RaguSharan';
+select user, host, password from user;
+
+MariaDB [mysql]> select user, host, password from user;
++------------+-----------+-------------------------------------------+
+| User       | Host      | Password                                  |
++------------+-----------+-------------------------------------------+
+| root       | localhost |                                           |
+| Sharanjana | localhost | *B39498816BD31CED10E0726B6795E1BC22ABBD57 |
+| root       | 127.0.0.1 |                                           |
+| root       | ::1       |                                           |
+| pma        | localhost |                                           |
++------------+-----------+-------------------------------------------+
+5 rows in set (0.001 sec)
+
+---------------------------------------------
+
+DROP USER 'Sharanjana'@'localhost';
+
+-------------------------------------------------
+\\to change the user name
+
+update user set user='Sharanjana01' where user='Sharanjana';
+
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+MariaDB [mysql]> select user, host, password from user;
++--------------+-----------+-------------------------------------------+
+| User         | Host      | Password                                  |
++--------------+-----------+-------------------------------------------+
+| root         | localhost |                                           |
+| Sharanjana01 | localhost | *B39498816BD31CED10E0726B6795E1BC22ABBD57 |
+| root         | 127.0.0.1 |                                           |
+| root         | ::1       |                                           |
+| pma          | localhost |                                           |
++--------------+-----------+-------------------------------------------+
+5 rows in set (0.001 sec)
+
+
+--------------------------------------------------
+\\to change host name
+
+update user set host='Shana' where user='Sharanjana01';
+
+Query OK, 1 row affected (0.002 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+select user, host, password from user;
+
+MariaDB [mysql]> select user, host, password from user;
++--------------+-----------+-------------------------------------------+
+| User         | Host      | Password                                  |
++--------------+-----------+-------------------------------------------+
+| root         | localhost |                                           |
+| Sharanjana01 | Shana     | *B39498816BD31CED10E0726B6795E1BC22ABBD57 |
+| root         | 127.0.0.1 |                                           |
+| root         | ::1       |                                           |
+| pma          | localhost |                                           |
++--------------+-----------+-------------------------------------------+
+5 rows in set (0.001 sec)
+
+
+-------------------------------------
+\\to change the password
+
+set password for 'Sharanjana01'@localhost=password('RaguSharan01');
+
+
+---------------------------------------
+##############################################################################
+---------------------------------------
+
+
+show databases;
+
+use test;
+
+show tables;
+
+----------------------------------------
+
+
+create table sample_1(col_1 varchar(5));
+
+Query OK, 0 rows affected (0.013 sec)
+
+-----------------------------------------
+
+
+
+GRANT SELECT ON test .sample_1 TO 'student01'@'localhost';
+
+Query OK, 0 rows affected (0.006 sec)
+
+----------------------------------------
+
+
+
+show grants for 'student01'@'localhost';
++--------------------------------------------------------------+
+| Grants for student01@localhost                               |
++--------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `student01`@`localhost`                |
+| GRANT SELECT ON `test`.`sample_1` TO `student01`@`localhost` |
++--------------------------------------------------------------+
+2 rows in set (0.003 sec)

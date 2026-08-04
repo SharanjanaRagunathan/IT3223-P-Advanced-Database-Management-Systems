@@ -1,0 +1,618 @@
+Exercise - 01
+
+a)
+create database PartsSupplyDB;
+
+USE PartsSupplyDB;
+
+CREATE TABLE Suppliers (
+    SID VARCHAR(5) PRIMARY KEY,
+    SName VARCHAR(50) NOT NULL,
+    Status INT,
+    SCity VARCHAR(50)
+);
+
+
+CREATE TABLE Parts (
+    PID VARCHAR(5) PRIMARY KEY,
+    PName VARCHAR(50) NOT NULL,
+    Colour VARCHAR(30),
+    Weight INT,
+    PCity VARCHAR(50)
+);
+
+
+CREATE TABLE Projects (
+    PrID VARCHAR(5) PRIMARY KEY,
+    PrName VARCHAR(50) NOT NULL,
+    PrCity VARCHAR(50)
+);
+
+
+CREATE TABLE Shipments (
+    SID VARCHAR(5),
+    PID VARCHAR(5),
+    PrID VARCHAR(5),
+    Quantity INT,
+    PRIMARY KEY (SID, PID, PrID),
+    FOREIGN KEY (SID) REFERENCES Suppliers(SID)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (PID) REFERENCES Parts(PID)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (PrID) REFERENCES Projects(PrID)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+INSERT INTO Suppliers VALUES
+('S1','Smith',20,'London'),
+('S2','Jones',10,'Paris'),
+('S3','Black',30,'Paris'),
+('S4','Clark',20,'London'),
+('S5','Adams',30,'Athens');
+
+
+INSERT INTO Parts VALUES
+('P1','Nut','Red',12,'London'),
+('P2','Bolt','Green',17,'Paris'),
+('P3','Screw','Blue',17,'Rome'),
+('P4','Screw','Red',14,'London'),
+('P5','Cam','Blue',12,'Paris'),
+('P6','Cog','Red',19,'London');
+
+INSERT INTO Projects VALUES
+('J1','Sorter','Paris'),
+('J2','Punch','Rome'),
+('J3','Reader','Athens'),
+('J4','Console','Athens'),
+('J5','Collator','London'),
+('J6','Terminal','Oslo'),
+('J7','Tape','London');
+
+
+INSERT INTO Shipments VALUES
+('S1','P1','J1',200),
+('S1','P1','J4',700),
+('S2','P2','J1',400),
+('S2','P3','J2',200),
+('S2','P3','J3',200),
+('S2','P3','J4',500),
+('S2','P3','J5',600),
+('S2','P3','J6',400),
+('S2','P3','J7',800),
+('S2','P5','J2',100),
+('S3','P3','J1',200),
+('S3','P4','J2',500),
+('S4','P6','J3',300),
+('S4','P6','J7',300),
+('S5','P2','J2',200),
+('S5','P2','J4',100),
+('S5','P5','J5',500),
+('S5','P5','J7',100),
+('S5','P6','J2',200),
+('S5','P1','J4',100),
+('S5','P3','J4',200),
+('S5','P4','J4',800),
+('S5','P5','J4',400),
+('S5','P6','J4',500);
+
+
+b)
+
+DESCRIBE Suppliers;
+DESCRIBE Parts;
+DESCRIBE Projects;
+DESCRIBE Shipments;
+
+MariaDB [PartsSupplyDB]> DESCRIBE Suppliers;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| SID    | varchar(5)  | NO   | PRI | NULL    |       |
+| SName  | varchar(50) | NO   |     | NULL    |       |
+| Status | int(11)     | YES  |     | NULL    |       |
+| SCity  | varchar(50) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.016 sec)
+
+MariaDB [PartsSupplyDB]> DESCRIBE Parts;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| PID    | varchar(5)  | NO   | PRI | NULL    |       |
+| PName  | varchar(50) | NO   |     | NULL    |       |
+| Colour | varchar(30) | YES  |     | NULL    |       |
+| Weight | int(11)     | YES  |     | NULL    |       |
+| PCity  | varchar(50) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.014 sec)
+
+MariaDB [PartsSupplyDB]> DESCRIBE Projects;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| PrID   | varchar(5)  | NO   | PRI | NULL    |       |
+| PrName | varchar(50) | NO   |     | NULL    |       |
+| PrCity | varchar(50) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.019 sec)
+
+MariaDB [PartsSupplyDB]> DESCRIBE Shipments;
++----------+------------+------+-----+---------+-------+
+| Field    | Type       | Null | Key | Default | Extra |
++----------+------------+------+-----+---------+-------+
+| SID      | varchar(5) | NO   | PRI | NULL    |       |
+| PID      | varchar(5) | NO   | PRI | NULL    |       |
+| PrID     | varchar(5) | NO   | PRI | NULL    |       |
+| Quantity | int(11)    | YES  |     | NULL    |       |
++----------+------------+------+-----+---------+-------+
+4 rows in set (0.014 sec)
+
+-----------------------------------------------------------------------------------
+c)
+
+SELECT * FROM Suppliers;
+SELECT * FROM Parts;
+SELECT * FROM Projects;
+SELECT * FROM Shipments;
+
+MariaDB [PartsSupplyDB]> SELECT * FROM Suppliers;
++-----+-------+--------+--------+
+| SID | SName | Status | SCity  |
++-----+-------+--------+--------+
+| S1  | Smith |     20 | London |
+| S2  | Jones |     10 | Paris  |
+| S3  | Black |     30 | Paris  |
+| S4  | Clark |     20 | London |
+| S5  | Adams |     30 | Athens |
++-----+-------+--------+--------+
+5 rows in set (0.001 sec)
+
+MariaDB [PartsSupplyDB]> SELECT * FROM Parts;
++-----+-------+--------+--------+--------+
+| PID | PName | Colour | Weight | PCity  |
++-----+-------+--------+--------+--------+
+| P1  | Nut   | Red    |     12 | London |
+| P2  | Bolt  | Green  |     17 | Paris  |
+| P3  | Screw | Blue   |     17 | Rome   |
+| P4  | Screw | Red    |     14 | London |
+| P5  | Cam   | Blue   |     12 | Paris  |
+| P6  | Cog   | Red    |     19 | London |
++-----+-------+--------+--------+--------+
+6 rows in set (0.001 sec)
+
+MariaDB [PartsSupplyDB]> SELECT * FROM Projects;
++------+----------+--------+
+| PrID | PrName   | PrCity |
++------+----------+--------+
+| J1   | Sorter   | Paris  |
+| J2   | Punch    | Rome   |
+| J3   | Reader   | Athens |
+| J4   | Console  | Athens |
+| J5   | Collator | London |
+| J6   | Terminal | Oslo   |
+| J7   | Tape     | London |
++------+----------+--------+
+7 rows in set (0.001 sec)
+
+MariaDB [PartsSupplyDB]> SELECT * FROM Shipments;
++-----+-----+------+----------+
+| SID | PID | PrID | Quantity |
++-----+-----+------+----------+
+| S1  | P1  | J1   |      200 |
+| S1  | P1  | J4   |      700 |
+| S2  | P2  | J1   |      400 |
+| S2  | P3  | J2   |      200 |
+| S2  | P3  | J3   |      200 |
+| S2  | P3  | J4   |      500 |
+| S2  | P3  | J5   |      600 |
+| S2  | P3  | J6   |      400 |
+| S2  | P3  | J7   |      800 |
+| S2  | P5  | J2   |      100 |
+| S3  | P3  | J1   |      200 |
+| S3  | P4  | J2   |      500 |
+| S4  | P6  | J3   |      300 |
+| S4  | P6  | J7   |      300 |
+| S5  | P1  | J4   |      100 |
+| S5  | P2  | J2   |      200 |
+| S5  | P2  | J4   |      100 |
+| S5  | P3  | J4   |      200 |
+| S5  | P4  | J4   |      800 |
+| S5  | P5  | J4   |      400 |
+| S5  | P5  | J5   |      500 |
+| S5  | P5  | J7   |      100 |
+| S5  | P6  | J2   |      200 |
+| S5  | P6  | J4   |      500 |
++-----+-----+------+----------+
+24 rows in set (0.000 sec)
+
+-------------------------------------------------------------------------------------
+
+d)
+
+1.
+SELECT * FROM Projects WHERE PrCity='London';
+
+MariaDB [PartsSupplyDB]> SELECT * FROM Projects WHERE PrCity='London';
++------+----------+--------+
+| PrID | PrName   | PrCity |
++------+----------+--------+
+| J5   | Collator | London |
+| J7   | Tape     | London |
++------+----------+--------+
+2 rows in set (0.001 sec)
+
+
+2.
+SELECT * FROM Shipments
+WHERE Quantity BETWEEN 300 AND 750;
+
+MariaDB [PartsSupplyDB]> SELECT * FROM Shipments
+    -> WHERE Quantity BETWEEN 300 AND 750;
++-----+-----+------+----------+
+| SID | PID | PrID | Quantity |
++-----+-----+------+----------+
+| S1  | P1  | J4   |      700 |
+| S2  | P2  | J1   |      400 |
+| S2  | P3  | J4   |      500 |
+| S2  | P3  | J5   |      600 |
+| S2  | P3  | J6   |      400 |
+| S3  | P4  | J2   |      500 |
+| S4  | P6  | J3   |      300 |
+| S4  | P6  | J7   |      300 |
+| S5  | P5  | J4   |      400 |
+| S5  | P5  | J5   |      500 |
+| S5  | P6  | J4   |      500 |
++-----+-----+------+----------+
+11 rows in set (0.001 sec)
+
+
+3.
+SELECT SID FROM Suppliers
+WHERE SCity = 'Paris' AND Status > 20;
+
+MariaDB [PartsSupplyDB]> SELECT SID FROM Suppliers
+    -> WHERE SCity = 'Paris' AND Status > 20;
++-----+
+| SID |
++-----+
+| S3  |
++-----+
+1 row in set (0.002 sec)
+
+
+4.
+SELECT DISTINCT SID FROM Shipments
+WHERE PrID = 'J1'
+ORDER BY SID ASC;
+
+MariaDB [PartsSupplyDB]> SELECT DISTINCT SID FROM Shipments
+    -> WHERE PrID = 'J1'
+    -> ORDER BY SID ASC;
++-----+
+| SID |
++-----+
+| S1  |
+| S2  |
+| S3  |
++-----+
+3 rows in set (0.003 sec)
+
+5.
+SELECT DISTINCT S.SName
+FROM Suppliers S
+JOIN Shipments SH ON S.SID = SH.SID
+WHERE SH.PID = 'P2';
+
++-------+
+| SName |
++-------+
+| Jones |
+| Adams |
++-------+
+2 rows in set (0.001 sec)
+
+6.
+SELECT SName
+FROM Suppliers
+WHERE SCity IN (
+    SELECT SCity
+    FROM Suppliers
+    GROUP BY SCity
+    HAVING COUNT(*) > 1
+);
+
++-------+
+| SName |
++-------+
+| Smith |
+| Jones |
+| Black |
+| Clark |
++-------+
+4 rows in set (0.001 sec)
+
+
+7,
+SELECT SName
+FROM Suppliers
+WHERE SID NOT IN (
+    SELECT SID FROM Shipments WHERE PID = 'P2'
+);
++-------+
+| SName |
++-------+
+| Smith |
+| Black |
+| Clark |
++-------+
+3 rows in set (0.001 sec)
+
+
+8.
+SELECT SH.SID, SH.PID, SH.PrID
+FROM Shipments SH
+JOIN Suppliers S ON SH.SID = S.SID
+JOIN Parts P ON SH.PID = P.PID
+JOIN Projects PR ON SH.PrID = PR.PrID
+WHERE NOT (S.SCity = P.PCity AND P.PCity = PR.PrCity);
+
++-----+-----+------+
+| SID | PID | PrID |
++-----+-----+------+
+| S1  | P1  | J1   |
+| S1  | P1  | J4   |
+| S2  | P3  | J2   |
+| S2  | P3  | J3   |
+| S2  | P3  | J4   |
+| S2  | P3  | J5   |
+| S2  | P3  | J6   |
+| S2  | P3  | J7   |
+| S2  | P5  | J2   |
+| S3  | P3  | J1   |
+| S3  | P4  | J2   |
+| S4  | P6  | J3   |
+| S5  | P1  | J4   |
+| S5  | P2  | J2   |
+| S5  | P2  | J4   |
+| S5  | P3  | J4   |
+| S5  | P4  | J4   |
+| S5  | P5  | J4   |
+| S5  | P5  | J5   |
+| S5  | P5  | J7   |
+| S5  | P6  | J2   |
+| S5  | P6  | J4   |
++-----+-----+------+
+22 rows in set (0.000 sec)
+
+
+9.
+SELECT COUNT(DISTINCT PrID) AS TotalProjects
+FROM Shipments
+WHERE SID = 'S1';
+
++---------------+
+| TotalProjects |
++---------------+
+|             2 |
++---------------+
+1 row in set (0.000 sec)
+
+10.
+SELECT SUM(Quantity) AS TotalQuantity
+FROM Shipments
+WHERE SID = 'S5';
+
++---------------+
+| TotalQuantity |
++---------------+
+|          3100 |
++---------------+
+1 row in set (0.001 sec)
+
+
+11.
+SELECT PID
+FROM Shipments
+GROUP BY PID
+HAVING AVG(Quantity) > 320;
+
++-----+
+| PID |
++-----+
+| P1  |
+| P3  |
+| P4  |
+| P6  |
++-----+
+4 rows in set (0.001 sec)
+
+
+12.
+SELECT PrID, PrCity
+FROM Projects
+WHERE PrCity LIKE '_o%';
+
++------+--------+
+| PrID | PrCity |
++------+--------+
+| J2   | Rome   |
+| J5   | London |
+| J7   | London |
++------+--------+
+3 rows in set (0.001 sec)
+
+
+13.
+SELECT DISTINCT PR.PrName
+FROM Projects PR
+JOIN Shipments SH ON PR.PrID = SH.PrID
+WHERE SH.SID = 'S4';
+
++--------+
+| PrName |
++--------+
+| Reader |
+| Tape   |
++--------+
+2 rows in set (0.001 sec)
+
+14.
+SELECT DISTINCT SH.PID
+FROM Shipments SH
+JOIN Projects PR ON SH.PrID = PR.PrID
+WHERE PR.PrCity = 'London';
+
++-----+
+| PID |
++-----+
+| P3  |
+| P5  |
+| P6  |
++-----+
+3 rows in set (0.001 sec)
+
+15.
+SELECT SID FROM Suppliers WHERE Status <(SELECT Status FROM Suppliers WHERE SID='S1');
++-----+
+| SID |
++-----+
+| S2  |
++-----+
+1 row in set (0.001 sec)
+
+16.
+SELECT SCity AS City FROM Suppliers
+UNION
+SELECT PCity FROM Parts
+UNION
+SELECT PrCity FROM Projects;
++--------+
+| City   |
++--------+
+| London |
+| Paris  |
+| Athens |
+| Rome   |
+| Oslo   |
++--------+
+5 rows in set (0.001 sec)
+
+17.
+UPDATE Parts
+SET Colour = 'Orange'
+WHERE Colour = 'Red';
+
+MariaDB [PartsSupplyDB]> UPDATE Parts
+    -> SET Colour = 'Orange'
+    -> WHERE Colour = 'Red';
+Query OK, 3 rows affected (0.004 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+MariaDB [PartsSupplyDB]> SELECT * FROM Parts;
++-----+-------+--------+--------+--------+
+| PID | PName | Colour | Weight | PCity  |
++-----+-------+--------+--------+--------+
+| P1  | Nut   | Orange |     12 | London |
+| P2  | Bolt  | Green  |     17 | Paris  |
+| P3  | Screw | Blue   |     17 | Rome   |
+| P4  | Screw | Orange |     14 | London |
+| P5  | Cam   | Blue   |     12 | Paris  |
+| P6  | Cog   | Orange |     19 | London |
++-----+-------+--------+--------+--------+
+6 rows in set (0.001 sec)
+
+
+18.
+DELETE FROM Projects
+WHERE PrID NOT IN (
+    SELECT DISTINCT PrID FROM Shipments
+);
+
+
+MariaDB [PartsSupplyDB]> DELETE FROM Projects
+    -> WHERE PrID NOT IN (
+    ->     SELECT DISTINCT PrID FROM Shipments
+    -> );
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [PartsSupplyDB]> SELECT * FROM Projects;
++------+----------+--------+
+| PrID | PrName   | PrCity |
++------+----------+--------+
+| J1   | Sorter   | Paris  |
+| J2   | Punch    | Rome   |
+| J3   | Reader   | Athens |
+| J4   | Console  | Athens |
+| J5   | Collator | London |
+| J6   | Terminal | Oslo   |
+| J7   | Tape     | London |
++------+----------+--------+
+7 rows in set (0.000 sec)
+
+
+19.
+INSERT INTO Suppliers (SID, SName, Status, SCity)
+VALUES ('S10','Smith',NULL,'New York');
+
+MariaDB [PartsSupplyDB]> INSERT INTO Suppliers (SID, SName, Status, SCity)
+    -> VALUES ('S10','Smith',NULL,'New York');
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [PartsSupplyDB]> SELECT * FROM Suppliers;
++-----+-------+--------+----------+
+| SID | SName | Status | SCity    |
++-----+-------+--------+----------+
+| S1  | Smith |     20 | London   |
+| S10 | Smith |   NULL | New York |
+| S2  | Jones |     10 | Paris    |
+| S3  | Black |     30 | Paris    |
+| S4  | Clark |     20 | London   |
+| S5  | Adams |     30 | Athens   |
++-----+-------+--------+----------+
+6 rows in set (0.001 sec)
+
+20.
+CREATE TABLE LondonParts AS
+SELECT DISTINCT SH.PID
+FROM Shipments SH
+JOIN Suppliers S ON SH.SID = S.SID
+WHERE S.SCity = 'London'
+UNION
+SELECT DISTINCT SH.PID
+FROM Shipments SH
+JOIN Projects PR ON SH.PrID = PR.PrID
+WHERE PR.PrCity = 'London';
+
+
+MariaDB [PartsSupplyDB]> CREATE TABLE LondonParts AS
+    -> SELECT DISTINCT SH.PID
+    -> FROM Shipments SH
+    -> JOIN Suppliers S ON SH.SID = S.SID
+    -> WHERE S.SCity = 'London'
+    -> UNION
+    -> SELECT DISTINCT SH.PID
+    -> FROM Shipments SH
+    -> JOIN Projects PR ON SH.PrID = PR.PrID
+    -> WHERE PR.PrCity = 'London';
+Query OK, 4 rows affected (0.012 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [PartsSupplyDB]> DESCRIBE LondonParts;
++-------+------------+------+-----+---------+-------+
+| Field | Type       | Null | Key | Default | Extra |
++-------+------------+------+-----+---------+-------+
+| PID   | varchar(5) | NO   |     |         |       |
++-------+------------+------+-----+---------+-------+
+1 row in set (0.014 sec)
+
+MariaDB [PartsSupplyDB]> SELECT * FROM LondonParts;
++-----+
+| PID |
++-----+
+| P1  |
+| P6  |
+| P3  |
+| P5  |
++-----+
+4 rows in set (0.001 sec)
